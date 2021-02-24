@@ -4,6 +4,9 @@ public class MovieinfoItem {
 	private String movieID;
 	private String name;
 	
+    public MovieinfoItem() {
+		
+	}
 	
 	public MovieinfoItem(String movieID, String name) {
 		super();
