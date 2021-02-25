@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,9 +21,9 @@ public class MoviecatalogController {
 	
 	//calling microservice using rest template
 	@Autowired
-	private RestTemplate resttemplate;
+	private RestTemplate restTemplate;
 	
-	@RequestMapping("/{userid}")
+	@GetMapping("/{userid}") 
 	public List<MovieCatalogItem> getCatalog(@PathVariable("userid") String userid)
 	{
 		
@@ -32,7 +33,7 @@ public class MoviecatalogController {
 		);
 		
 		return ratings.stream().map(rating -> {
-		            MovieinfoItem movie= resttemplate.getForObject("http://localhost:8081/movie/"+rating.getMovieId(),MovieinfoItem.class);
+		            MovieinfoItem movie= restTemplate.getForObject("http://localhost:8081/movie/ghj",MovieinfoItem.class);
 					return (new MovieCatalogItem(movie.getName(),"Desc",rating.getRating()));
 		})
 			.collect(Collectors.toList());
