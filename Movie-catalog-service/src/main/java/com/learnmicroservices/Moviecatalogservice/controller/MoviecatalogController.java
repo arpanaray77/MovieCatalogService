@@ -21,19 +21,19 @@ public class MoviecatalogController {
 	
 	//calling microservice using rest template
 	@Autowired
-	private RestTemplate restTemplate;
+    RestTemplate restTemplate;
 	
-	@GetMapping("/{userid}") 
+	@RequestMapping("/{userid}") 
 	public List<MovieCatalogItem> getCatalog(@PathVariable("userid") String userid)
 	{
 		
 		List<RatingmovieItem> ratings = Arrays.asList(
 			new RatingmovieItem("1234",4),
-			new RatingmovieItem("5678",3)
+			new RatingmovieItem("5678",5)
 		);
 		
 		return ratings.stream().map(rating -> {
-		            MovieinfoItem movie= restTemplate.getForObject("http://localhost:8081/movie/ghj",MovieinfoItem.class);
+		            MovieinfoItem movie= restTemplate.getForObject("http://localhost:8081/movie/"+rating.getMovieId(),MovieinfoItem.class);
 					return (new MovieCatalogItem(movie.getName(),"Desc",rating.getRating()));
 		})
 			.collect(Collectors.toList());

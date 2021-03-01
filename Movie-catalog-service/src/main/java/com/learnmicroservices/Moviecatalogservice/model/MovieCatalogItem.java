@@ -5,6 +5,11 @@ public class MovieCatalogItem {
 	private String name;
 	private String desc;
 	private int rating;
+	
+	public MovieCatalogItem() {
+		
+	}
+	
 	public String getName() {
 		return name;
 	}
