@@ -13,7 +13,7 @@ public class MovieinfoController {
 	@RequestMapping("/{movieid}")
 	public MovieinfoItem getMovie(@PathVariable("movieid") String movieid)
 	{
-		return new MovieinfoItem("123","Avengers");
+		return new MovieinfoItem(movieid,"Avengers");
 		
 	}
 }
