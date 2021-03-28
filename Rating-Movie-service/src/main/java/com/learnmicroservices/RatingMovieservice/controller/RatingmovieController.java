@@ -16,7 +16,7 @@ import com.learnmicroservices.RatingMovieservice.model.UserRating;
 @EnableEurekaClient
 public class RatingmovieController {
 
-	@RequestMapping("/{movieid}")
+	@RequestMapping("/movies/{movieid}")
 	public RatingmovieItem getMovie(@PathVariable("movieid") String movieid)
 	{
 		return new  RatingmovieItem(movieid,4);
@@ -29,8 +29,8 @@ public class RatingmovieController {
 	
 	{
 	List<RatingmovieItem> ratings = Arrays.asList(
-			new RatingmovieItem("1234",4),
-			new RatingmovieItem("5678",5)
+			new RatingmovieItem("123",4),
+			new RatingmovieItem("465",5)
 		);
 		
 	UserRating userRating=new UserRating();

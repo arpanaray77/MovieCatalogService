@@ -1,30 +1,44 @@
 package com.learnmicroservices.Movieinfoservice.model;
 
 public class MovieinfoItem {
-	private String movieID;
-	private String name;
 	
-	public MovieinfoItem() {
+    private String movieId;
+    private String name;
+    private String description;
+    
+    
+
+    public MovieinfoItem() {
 		
 	}
-	
-	public MovieinfoItem(String movieID, String name) {
-		super();
-		this.movieID = movieID;
-		this.name = name;
-	}
-	public String getMovieID() {
-		return movieID;
-	}
-	public void setMovieID(String movieID) {
-		this.movieID = movieID;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 
+	public MovieinfoItem(String movieId, String name, String description) {
+        this.movieId = movieId;
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
