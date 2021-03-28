@@ -15,7 +15,7 @@ import com.learnmicroservices.Movieinfoservice.model.MovieinfoItem;
 @RequestMapping("/movie")
 public class MovieinfoController {
 	
-	@Value("${api.key}")
+	@Value("${api.key}") 
     public String apiKey;
 	
 	@Autowired
