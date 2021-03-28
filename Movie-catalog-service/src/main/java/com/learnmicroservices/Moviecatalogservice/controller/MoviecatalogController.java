@@ -14,7 +14,6 @@ import com.learnmicroservices.Moviecatalogservice.model.UserRating;
 
 @RestController
 @RequestMapping("/catalog")
-@EnableEurekaClient
 public class MoviecatalogController {
 	
 	
@@ -35,17 +34,17 @@ public class MoviecatalogController {
 	        //calling microservice using rest template
            MovieinfoItem movie= restTemplate.getForObject("http://movie-info-service/movie/"+rating.getMovieId(),MovieinfoItem.class);
 	
-//			MovieinfoItem movie=webClientBuilder.build()
-//			                        .get()
-//			                        .uri("http://localhost:8081/movie/"+rating.getMovieId())
-//			                        .retrieve()
-//			                        .bodyToMono(MovieinfoItem.class)
-//			                        .block();
-			        
-			return (new MovieCatalogItem(movie.getName(),"Desc",rating.getRating()));
+        
+			return (new MovieCatalogItem(movie.getName(),movie.getDescription(),rating.getRating()));
 		})
 			.collect(Collectors.toList());
 	}
 
 }
-
+/*Alternative way
+   MovieinfoItem movie=webClientBuilder.build()
+                       .get()
+                       .uri("http://localhost:8081/movie/"+rating.getMovieId())
+                       .retrieve()
+                       .bodyToMono(MovieinfoItem.class)
+                       .block(); */
