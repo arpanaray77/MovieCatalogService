@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import com.learnmicroservices.Moviecatalogservice.Services.MovieInfo;
+import com.learnmicroservices.Moviecatalogservice.Services.UserInfo;
 import com.learnmicroservices.Moviecatalogservice.model.MovieCatalogItem;
 import com.learnmicroservices.Moviecatalogservice.model.MovieinfoItem;
 import com.learnmicroservices.Moviecatalogservice.model.RatingmovieItem;
@@ -24,41 +27,21 @@ public class MoviecatalogController {
 	@Autowired
     private RestTemplate restTemplate;
 	
+	@Autowired
+	MovieInfo movieInfo;
+	
+	@Autowired
+	UserInfo userInfo;
+	
+	
 	@RequestMapping("/{userid}") 
 	public List<MovieCatalogItem> getCatalog(@PathVariable("userid") String userid)
 	{
 		//calling api or microservice using rest template
-		UserRating userRating=getUserRating(userid);
+		UserRating userRating=userInfo.getUserRating(userid);
 		return userRating.getUserRating().stream()
-				.map(rating ->getCatalogItem(rating))
+				.map(rating ->movieInfo.getCatalogItem(rating))
 		        .collect(Collectors.toList());
-	}
-	
-	@HystrixCommand(fallbackMethod ="getFallbackCatalog")
-	private MovieCatalogItem getCatalogItem(RatingmovieItem rating)
-	{
-		MovieinfoItem movie= restTemplate.getForObject("http://movie-info-service/movie/"+rating.getMovieId(),MovieinfoItem.class);
-		return (new MovieCatalogItem(movie.getName(),movie.getDescription(),rating.getRating()));
-	}
-	
-	@HystrixCommand(fallbackMethod ="getFallbackUserRating")
-	private UserRating getUserRating(@PathVariable("userid") String userid)
-	{
-		return restTemplate.getForObject("http://rating-movie-service/rating/users/"+userid,UserRating.class); 
-	}
-
-	
-	public MovieCatalogItem getFallbackCatalog(RatingmovieItem rating) {
-		
-	  return (new MovieCatalogItem("Movie name not found","",rating.getRating())); //hardcoded Movie catlog item
-	}
-	
-	public UserRating getFallbackUserRating(@PathVariable("userid") String userid)
-	{
-		UserRating userRating = new UserRating();
-		userRating.setUserId(userid);
-		userRating.setUserRating(Arrays.asList(new RatingmovieItem("0",0))); //hardcoded rating object
-		return userRating;
 	}
 
 }
