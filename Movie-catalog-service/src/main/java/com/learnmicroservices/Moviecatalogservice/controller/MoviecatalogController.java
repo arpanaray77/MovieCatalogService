@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.learnmicroservices.Moviecatalogservice.model.MovieCatalogItem;
 import com.learnmicroservices.Moviecatalogservice.model.MovieinfoItem;
+import com.learnmicroservices.Moviecatalogservice.model.RatingmovieItem;
 import com.learnmicroservices.Moviecatalogservice.model.UserRating;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
@@ -24,26 +25,40 @@ public class MoviecatalogController {
     private RestTemplate restTemplate;
 	
 	@RequestMapping("/{userid}") 
-	@HystrixCommand(fallbackMethod ="getFallbackCatalog")
 	public List<MovieCatalogItem> getCatalog(@PathVariable("userid") String userid)
 	{
 		//calling api or microservice using rest template
-		UserRating ratings=restTemplate.getForObject("http://rating-movie-service/rating/users/"+userid,UserRating.class); 
-		//replacing hard coded url to registered name of microservice on eureka server
-		
-		return ratings.getUserRating().stream().map(rating -> {
-	        //calling microservice using rest template
-           MovieinfoItem movie= restTemplate.getForObject("http://movie-info-service/movie/"+rating.getMovieId(),MovieinfoItem.class);
-	
-        
-			return (new MovieCatalogItem(movie.getName(),movie.getDescription(),rating.getRating()));
-		})
-			.collect(Collectors.toList());
+		UserRating userRating=getUserRating(userid);
+		return userRating.getUserRating().stream()
+				.map(rating ->getCatalogItem(rating))
+		        .collect(Collectors.toList());
 	}
 	
-	public List<MovieCatalogItem> getFallbackCatalog(@PathVariable("userid") String userid)
+	@HystrixCommand(fallbackMethod ="getFallbackCatalog")
+	private MovieCatalogItem getCatalogItem(RatingmovieItem rating)
 	{
-		return Arrays.asList(new MovieCatalogItem("No movie","",0));
+		MovieinfoItem movie= restTemplate.getForObject("http://movie-info-service/movie/"+rating.getMovieId(),MovieinfoItem.class);
+		return (new MovieCatalogItem(movie.getName(),movie.getDescription(),rating.getRating()));
+	}
+	
+	@HystrixCommand(fallbackMethod ="getFallbackUserRating")
+	private UserRating getUserRating(@PathVariable("userid") String userid)
+	{
+		return restTemplate.getForObject("http://rating-movie-service/rating/users/"+userid,UserRating.class); 
+	}
+
+	
+	public MovieCatalogItem getFallbackCatalog(RatingmovieItem rating) {
+		
+	  return (new MovieCatalogItem("Movie name not found","",rating.getRating())); //hardcoded Movie catlog item
+	}
+	
+	public UserRating getFallbackUserRating(@PathVariable("userid") String userid)
+	{
+		UserRating userRating = new UserRating();
+		userRating.setUserId(userid);
+		userRating.setUserRating(Arrays.asList(new RatingmovieItem("0",0))); //hardcoded rating object
+		return userRating;
 	}
 
 }
