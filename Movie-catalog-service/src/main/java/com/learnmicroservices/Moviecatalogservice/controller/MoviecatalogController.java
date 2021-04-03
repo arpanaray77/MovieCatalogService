@@ -22,12 +22,7 @@ public class MoviecatalogController {
 	MovieInfo movieInfo;
 	
 	@Autowired
-	UserInfo userInfo;
-	
-	@Value("${app.name}") //injecting values from properties file
-	private String appname;
-	
-	
+	UserInfo userInfo;	
 	
 	@RequestMapping("/{userid}") 
 	public List<MovieCatalogItem> getCatalog(@PathVariable("userid") String userid)
