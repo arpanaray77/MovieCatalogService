@@ -9,18 +9,18 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.learnmicroservices</groupId>
-	<artifactId>Rating-Movie-service</artifactId>
+	<artifactId>Configserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Rating-Movie-service</name>
-	<description>Demo project for Spring Boot and Microservices</description>
+	<name>Configserver</name>
+	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>1.8</java.version>
-		<spring-cloud.version>2020.0.1</spring-cloud.version>
+		<java.version>11</java.version>
+		<spring-cloud.version>2020.0.2</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-server</artifactId>
 		</dependency>
 
 		<dependency>
@@ -28,19 +28,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		
-		 <dependency>
-		    <groupId>org.springframework.cloud</groupId>
-		    <artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
-		
 	</dependencies>
-	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -52,7 +40,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
 
 	<build>
 		<plugins>
