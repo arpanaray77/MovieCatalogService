@@ -1,9 +1,0 @@
-app:
-  name: Myapp
-  description: welcome to my world
-  
-my:
-   greeting: Hello world
-   
-management.endpoints.web.exposure.include: "*"
-spring.cloud.config.uri: http://localhost:8888

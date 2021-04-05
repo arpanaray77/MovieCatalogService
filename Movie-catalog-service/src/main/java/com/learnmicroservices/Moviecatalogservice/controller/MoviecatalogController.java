@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,15 +26,6 @@ public class MoviecatalogController {
 	@Autowired
 	UserInfo userInfo;
 	
-	@Value("${my.greeting:default}")
-	public String msg;
-	
-	@GetMapping("/greeting")
-	public String greeting()
-	{
-		return "my.greeting: "+msg;
-	}
-	
 	@RequestMapping("/{userid}") 
 	public List<MovieCatalogItem> getCatalog(@PathVariable("userid") String userid)
 	{
@@ -44,8 +36,21 @@ public class MoviecatalogController {
 				.map(rating ->movieInfo.getCatalogItem(rating))
 		        .collect(Collectors.toList());
 	}
-
 }
+	
+	@RefreshScope
+	@RestController
+	class MessageRestController {
+	 
+	    @Value("${msg:Config Server is not working. Please check...}")
+	    private String msg;
+	 
+	    @GetMapping("/msg")
+	    public String getMsg() {
+	        return this.msg;
+	    }
+	}
+
 /*Alternative way
  * @Autowired
 	private WebClient.Builder webClientBuilder;
