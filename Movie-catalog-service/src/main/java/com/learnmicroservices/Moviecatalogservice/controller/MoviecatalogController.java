@@ -26,6 +26,7 @@ public class MoviecatalogController {
 	@Autowired
 	UserInfo userInfo;
 	
+	
 	@RequestMapping("/{userid}") 
 	public List<MovieCatalogItem> getCatalog(@PathVariable("userid") String userid)
 	{
@@ -36,7 +37,9 @@ public class MoviecatalogController {
 				.map(rating ->movieInfo.getCatalogItem(rating))
 		        .collect(Collectors.toList());
 	}
+	
 }
+
 	
 	@RefreshScope
 	@RestController
