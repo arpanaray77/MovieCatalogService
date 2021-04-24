@@ -16,19 +16,19 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	
-        @Override //overriding default spring security login
+        @Override //overriding default spring security login -----authorization
 		protected void configure(HttpSecurity http) throws Exception {
 			http
 			     .authorizeRequests()
 				     .anyRequest().authenticated()
 				     .and()
-			     .formLogin()
+			         .formLogin()
 			     	 .loginPage("/login")
 		             .permitAll();
         }
         
         @Bean
-    	@Override
+    	@Override //getting a user from memory
     	public UserDetailsService userDetailsService() {
     		UserDetails user =
     			 User.withDefaultPasswordEncoder()
