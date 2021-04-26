@@ -2,18 +2,31 @@ package com.learnmicroservices.Moviecatalogservice;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.learnmicroservices.Moviecatalogservice.model.User;
 
 public class MyUserDetails implements UserDetails{
 	//this class holds all the Details of a user
 	
 	private String userName;
+	private String password;
+	private boolean active;
+	private List<GrantedAuthority> authorities;
 	
-	public MyUserDetails(String userName)
+	public MyUserDetails(User userName)
 	{
-		this.userName=userName;
+		this.userName=userName.getUsername();
+		this.password=userName.getPassword();
+		this.active=userName.isActive();
+		this.authorities=Arrays.stream(userName.getRoles().split(","))
+				.map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toList());
 	}
 	
 	public MyUserDetails() {
@@ -23,13 +36,13 @@ public class MyUserDetails implements UserDetails{
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		
-		return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+		return authorities;
 	}
 
 	@Override
 	public String getPassword() {
 		
-		return "pass";
+		return password;
 	}
 
 	@Override
